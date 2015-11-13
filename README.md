@@ -2,7 +2,7 @@
 
 ## Objectives
 
-1. Define the purpose of ActiveRecord - the default rails ORM
+1. Define ActiveRecord as the default ORM for rails
 2. Build instance methods that extend a basic AR class
 3. Create a migration by hand that inherits from AR:Migration and use correct naming for the file and class 
 4. Use create_table
@@ -17,13 +17,13 @@
 
 ## Notes
 
-Build instance methods that extend a basic AR class (understand that as a model AR classes interact with our database but can still function as normal classes and provide abstractions ontop of the data)
+Build instance methods that extend a basic AR class (remind them that as a model AR classes interact with our database but can still function as normal classes and provide abstractions ontop of the data. They've done this previously in sinatra so they are familiar with AR)
 
 AR models provide an abstraction for our database and persistance and lots of logic and functionality relating to the data our models provide to our application.
 
 Our database might have a first_name and last_name column, which AR provides access to with first_name, and last_name readers/writers, but if we wanted to print a full_name, we'd build a full_name instance method that combines the first_name and last_name, so our models aren't just data, but also we build these sort of data helper methods.
 
-In order to make an AR model, we need a database table. AR uses migrations. Let's make a migration file.
+First we need a table, so let's make a migration (they've done this before!)
 
 001_create_posts.rb
 
@@ -35,11 +35,11 @@ post.rb
 
 let's reiterate here convention over configuration, remind them of controller/action/view and now we have another one table/model/filename and migration_filename/migration_class
 
-rake db:migrate
+rake db:migrate (they know rake, and have done this)
 
-accessing the model in console
+accessing the model in rails console
 
-reading a model spec. (first_name/full_name is a good example)
+reading a model spec. (first_name/full_name is a good example). They've done this a ton
 
 explain models are separate from controllers and views - we connect a model to a controller and a view by loading the model in a controller action, no convention there...
 
