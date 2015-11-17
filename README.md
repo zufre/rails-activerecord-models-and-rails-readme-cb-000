@@ -1,53 +1,144 @@
 # ActiveRecord Models and Rails
 
-## Objectives
+## ActiveRecord's Role
 
-1. Define ActiveRecord as the default ORM for rails
-2. Build instance methods that extend a basic AR class
-3. Create a migration by hand that inherits from AR:Migration and use correct naming for the file and class 
-4. Use create_table
-5. Create a model file by hand and inherit from AR
-6. Use model conventions to correctly name the class based on the table name
-7. Migrate the database with rake db:migrate
-8. Access and write to a model from a Rails console
-9. Read a model spec for an instance method
-10. Describe how controllers and views have access to our model constant by convention and usage 
-11. Read a database.yml and describe how it connects to different environment databases
+ActiveRecord is the built in ORM that Rails utilizes to manage the model aspects of an application. What is an ORM? An ORM is an Object Relational Mapping system, essentially this is the module that enables your application to manage data in a method driven structure. This means that you are able to run queries, add records, and perform all of the traditional database processes by leveraging methods as opposed to writing SQL manually. For example, below is the traditional way that we would query a database of 'posts' using SQL:
 
+```"SELECT * FROM Posts"```
 
-## Notes
+Compared with leveraging ActiveRecord:
 
-Build instance methods that extend a basic AR class (remind them that as a model AR classes interact with our database but can still function as normal classes and provide abstractions ontop of the data. They've done this previously in sinatra so they are familiar with AR)
+```ruby
+Post.all
+```
 
-AR models provide an abstraction for our database and persistance and lots of logic and functionality relating to the data our models provide to our application.
+By using ActiveRecord you are also able to perform advanced query tasks, such as method chaining and scoping, which typically requires less code and makes for a more readable query.
 
-Our database might have a first_name and last_name column, which AR provides access to with first_name, and last_name readers/writers, but if we wanted to print a full_name, we'd build a full_name instance method that combines the first_name and last_name, so our models aren't just data, but also we build these sort of data helper methods.
+## ActiveRecord Models
 
-First we need a table, so let's make a migration (they've done this before!)
+So if we have a database table, why do we need a model file? By using model files we are able to create an organized layer of abstraction for our data. An important item to remember is that at the end of the day the model file is a Ruby class. It will typically inherit from the ActiveRecord::Base class, which means that it has access to a number of methods that assist in working with the database. However, you can treat it like a regular Ruby class, allowing you to create methods, data attributes, and everything else that you would want to do in a class file.
 
-001_create_posts.rb
+A typical model file will contain code such as, but not limited to the following:
 
-we dont need to go too much into Migration syntax as they mostly learned this already or this readme can assume they are familiar with AR Basics such as migrations and stuff. but we'll have the migration code and link to migration docs for more information.
+* Custom scopes
+* Model instance methods
+* Default settings for database columns
+* Validations
+* Model-to-model relationships
+* Callbacks
+* Custom algorithms
 
-then we need a model file in app/models
+## Creating an ActiveRecord Model
 
-post.rb
+In order to get started, we will first create a RSpec test so that we can build out everything using a BDD approach. Assuming we already have RSpec installed, let's create a new directory and place our first spec in it: ```spec/models/post_spec.rb```. In that file place the following code:
 
-let's reiterate here convention over configuration, remind them of controller/action/view and now we have another one table/model/filename and migration_filename/migration_class
+```ruby
+require 'rails_helper'
 
-rake db:migrate (they know rake, and have done this)
+describe Post do
 
-accessing the model in rails console
+end
+```
 
-reading a model spec. (first_name/full_name is a good example). They've done this a ton
+If we run ```bundle exec rspec``` it will throw an error since we don't have any code in the application for our ```post``` model yet. To fix this create a new file in the ```app/models``` directory called ```post.rb``` and add the following code:
 
-explain models are separate from controllers and views - we connect a model to a controller and a view by loading the model in a controller action, no convention there...
+```ruby
+class Post
+end
+```
 
-database.yml defines are database connection and ActiveRecord::Base.connection holds those connections.
+This will get the tests passing, but it still has some weird errors, and this is because we need to create a schema file. You can do that by running ```rake db:migrate```, this will create the schema file and clear the warning. Now update the Post spec to test for a Post being created, it will look something like this:
 
-That's it for models in rails for now.
+```ruby
+describe Post do
+  it 'can be created' do
+    post = Post.create!(title: "My title", description: "The post description")
+    expect(post).to be_valid
+  end
+end
+```
 
-create a migration if needed, for new models for sure
-define the model file, inherit from AR
-use the model.
-lets avoid generators for now....
+Running this test gives us the error of: ```undefined method `create!' for Post:Class```. To implement this feature let's create the database table for our posts. Create a new directory in the ```db/``` directory called ```migrate``` and add a new file called ```001_create_posts.rb``` and add this code:
+
+```ruby
+class CreatePosts < ActiveRecord::Migration
+  def change
+    create_table :posts do |t|
+      t.string :title
+      t.text :description
+
+      t.timestamps null: false
+    end
+  end
+end
+```
+
+This is a basic migration that will create a ```posts``` table that will have title and description columns, along with the built in timestamps. Migrations [documentation](http://edgeguides.rubyonrails.org/active_record_migrations.html). This migration follows the standard naming convention, when you want to create a table, the class name should reflect that, hence the name ```CreatePosts```. This is then reiterated by the argument passed to the ```create_table``` method of ```:posts```. The filename itself needs to be unique, and when you generate a migration automatically through a model or scaffold generator you will notice that the migration file name is prepended with a timestamp value to make sure there are no duplicate migration files.
+
+After running ```rake db:migrate``` we can see that our ```db/schema.rb``` file has been updated with our new posts table, however if we run our tests again you can see that the tests are still failing due to the error: ```undefined method `create!' for Post:Class```. This is because we left out one very important piece of code from the Post model file, in order to leverage built in methods such as ```create!``` we need to have the Post class inherit from ```ActiveRecord::Base```. Update the post.rb model file to match this below:
+
+```ruby
+class Post < ActiveRecord::Base
+end
+```
+
+Now all of the tests are passing and we can create a new post correctly. Even though we know this is working because our tests are passing, let's still test this in the console, open up the Rails console by running: ```rails c```. Once the session has started, run the following command to ensure it recognizes our new Post model:
+
+```
+Post.all
+```
+
+If everything is setup properly you will see that it returns an empty ActiveRecord object. Now let's test creating a record using the console:
+
+```
+Post.create!(title: "My title", description: "The post description")
+```
+Now running the query:
+
+```
+Post.last
+```
+
+Returns our newly created post.
+
+With our Post model working, let's add a new feature that returns a summary of a post, as usual start off by creating a spec for the feature:
+
+```ruby
+it 'has a summary' do
+  post = Post.create!(title: "My title", description: "The post description")
+  expect(post.post_summary).to eq("My title - The post description")
+end
+```
+
+If we run this we'll get a failure since we do not have a ```post_summary``` method for post. Add that to the model file:
+
+```ruby
+def post_summary
+end
+```
+This now results in a failure since the method currently doesn't return anything. Update the ```post_summary``` method like below:
+
+```ruby
+def post_summary
+  self.title + " - " + self.description
+end
+```
+Now if you run the tests, all of them are passing and our Post model has an instance method that returns a post summary. You can test this out in the Rails console as well by running a query on the record we created, such as:
+
+```
+Post.last.post_summary
+```
+And it will return the summary value of that specfic post.
+
+As you may have noticed, we did not have to create a controller, route, view, etc. in order to get the Post model working. The data aspect of the application can work separately from the view and data flow logic, this level of abstraction makes it straightforward to test data behavior without having it strongly coupled to how it is rendered to the user. With that being said, it is considered a best practice to have your controller and view files follow the proper naming convention so that the MVC associations are straightforward to follow. For example, to build out the controller and view code for our Post model we would create the following structure:
+
+* Create a ```posts_controller.rb``` file that calls on the Post model
+* Create a ```views/posts/``` directory that stores the views related to the Post model
+
+Also, if you are coming from other programming languages, you may be wondering how exactly we are able to connect to the database automatically, without having to create connection strings. The reason for this simplicity resides in the ```config/database.yml``` file that was generated when we created our application and ran ```rake db:create```, in that file you will see that the development, test, and production databases are all configured. From that stage the ActiveRecord::Base.connection method connects your application to the database, which is another benefit from having our model classes inherit from the ActiveRecord::Base module.
+
+Being able to work in different environments is one of the strong points of Rails, and the database.yml file takes advantage of this feature by having different database options for each type of environment. If you analyze the file you can see that you can establish different database adapters, pools, timeout values, etc. for each environment specifically. This allows for you to have a setup such as using sqlite locally and Postgres in production, along with having a segmented database environment for your testing suite.
+
+## Summary
+
+We covered quite a bit of material in this lesson, you should now have a firm understanding of ActiveRecord models in Rails. ActiveRecord is a powerful tool that enables developers to focus on the logic of their applications, while streamlining processes such as connecting to the database, running queries, and much more.
