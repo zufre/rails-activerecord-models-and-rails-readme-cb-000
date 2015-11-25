@@ -16,21 +16,26 @@ By using ActiveRecord you are also able to perform advanced query tasks, such as
 
 ## ActiveRecord Models
 
-So if we have a database table, why do we need a model file? By using model files we are able to create an organized layer of abstraction for our data. An important item to remember is that at the end of the day the model file is a Ruby class. It will typically inherit from the ActiveRecord::Base class, which means that it has access to a number of methods that assist in working with the database. However, you can treat it like a regular Ruby class, allowing you to create methods, data attributes, and everything else that you would want to do in a class file.
+So if we have a database table, why do we need a model file? By using model files we are able to create an organized layer of abstraction for our data. An important item to remember is that at the end of the day the model file is a Ruby class. It will typically inherit from the `ActiveRecord::Base` class, which means that it has access to a number of methods that assist in working with the database. However, you can treat it like a regular Ruby class, allowing you to create methods, data attributes, and everything else that you would want to do in a class file.
 
 A typical model file will contain code such as, but not limited to the following:
 
-* Custom scopes
+* [Custom scopes](http://api.rubyonrails.org/classes/ActiveRecord/Scoping/Named/ClassMethods.html)
 * Model instance methods
 * Default settings for database columns
-* Validations
-* Model-to-model relationships
-* Callbacks
+* [Validations](http://api.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html)
+* [Model-to-model relationships](http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html)
+* [Callbacks](http://api.rubyonrails.org/classes/ActiveRecord/Callbacks.html)
 * Custom algorithms
+
+*If any/all of the items above aren't familiar to you yet, don't worry, we'll cover them in future lessons. However I think it's important to have an idea for what can be included in a model file*
+
 
 ## Creating an ActiveRecord Model
 
-In order to get started, we will first create a RSpec test so that we can build out everything using a BDD approach. Assuming we already have RSpec installed, let's create a new directory and place our first spec in it: ```spec/models/post_spec.rb```. In that file place the following code:
+As a professional Rails developer you will be expected to build applications by leveraging a BDD process, so we will walk through how to build each feature with a test first approach so that the tests can lead our development, however please focus on the implementation code so that you can get a firm understanding of how to build a model, database table, etc.
+
+In order to get started, we will first create a RSpec test. Assuming we already have RSpec installed, let's create a new directory and place our first spec in it: ```spec/models/post_spec.rb```. In that file place the following code:
 
 ```ruby
 require 'rails_helper'
@@ -82,7 +87,9 @@ class Post < ActiveRecord::Base
 end
 ```
 
-Now all of the tests are passing and we can create a new post correctly. Even though we know this is working because our tests are passing, let's still test this in the console, open up the Rails console by running: ```rails c```. Once the session has started, run the following command to ensure it recognizes our new Post model:
+Now all of the tests are passing and we can create a new post correctly. Even though we know this is working because our tests are passing, let's still test this in the console, open up the Rails console by running: `rails console`. Running the console will load the entire Rails environment and give you command line access to the app and the database. The console is a powerful tool that you can leverage in order to test out: scripts, methods, and database queries.
+
+Once the session has started, run the following command to ensure it recognizes our new Post model:
 
 ```
 Post.all
@@ -130,14 +137,14 @@ Post.last.post_summary
 ```
 And it will return the summary value of that specfic post.
 
-As you may have noticed, we did not have to create a controller, route, view, etc. in order to get the Post model working. The data aspect of the application can work separately from the view and data flow logic, this level of abstraction makes it straightforward to test data behavior without having it strongly coupled to how it is rendered to the user. With that being said, it is considered a best practice to have your controller and view files follow the proper naming convention so that the MVC associations are straightforward to follow. For example, to build out the controller and view code for our Post model we would create the following structure:
+As you may have noticed, we did not have to create a controller, route, view, etc. in order to get the Post model working. The data aspect of the application can work separately from the view and data flow logic, this level of abstraction makes it efficient to test data behavior without having it strongly coupled to how it is rendered to the user. With that being said, it is considered a best practice to have your controller and view files follow the proper naming convention so that the MVC associations are readable. For example, to build out the controller and view code for our Post model we would create the following structure:
 
 * Create a ```posts_controller.rb``` file that calls on the Post model
 * Create a ```views/posts/``` directory that stores the views related to the Post model
 
 Also, if you are coming from other programming languages, you may be wondering how exactly we are able to connect to the database automatically, without having to create connection strings. The reason for this simplicity resides in the ```config/database.yml``` file that was generated when we created our application and ran ```rake db:create```, in that file you will see that the development, test, and production databases are all configured. From that stage the ActiveRecord::Base.connection method connects your application to the database, which is another benefit from having our model classes inherit from the ActiveRecord::Base module.
 
-Being able to work in different environments is one of the strong points of Rails, and the database.yml file takes advantage of this feature by having different database options for each type of environment. If you analyze the file you can see that you can establish different database adapters, pools, timeout values, etc. for each environment specifically. This allows for you to have a setup such as using sqlite locally and Postgres in production, along with having a segmented database environment for your testing suite.
+Being able to work in different environments is one of the strong points of Rails, and the database.yml file takes advantage of this feature by having different database options for each type of environment. If you analyze the file you can see that you can establish different database adapters, pools, timeout values, etc. for each environment specifically. This allows for you to have a setup such as using sqlite locally and Postgres in production, along with having a segmented database environment for your testing suite. Some of these items are components that you won't need until you get into more advanced applications, however it's good to know where these items are located in the file system for when you get to that point.
 
 ## Summary
 
