@@ -51,3 +51,5 @@ create a migration if needed, for new models for sure
 define the model file, inherit from AR
 use the model.
 lets avoid generators for now....
+
+<a href='https://learn.co/lessons/rails-activerecord-models-and-rails-readme' data-visibility='hidden'>View this lesson on Learn.co</a>
