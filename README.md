@@ -49,7 +49,6 @@ end
 
 If we run ```bundle exec rspec``` it will throw an error since we don't have any code in the application for our ```post``` model yet. To fix this create a new file in the ```app/models``` directory called ```post.rb``` and add the following code:
 
-<<<<<<< HEAD
 ```ruby
 class Post
 end
@@ -94,18 +93,18 @@ Now all of the tests are passing and we can create a new post correctly. Even th
 
 Once the session has started, run the following command to ensure it recognizes our new Post model:
 
-```
+```ruby
 Post.all
 ```
 
 If everything is setup properly you will see that it returns an empty ActiveRecord object. Now let's test creating a record using the console:
 
-```
+```ruby
 Post.create!(title: "My title", description: "The post description")
 ```
 Now running the query:
 
-```
+```ruby
 Post.last
 ```
 
@@ -133,11 +132,13 @@ def post_summary
   self.title + " - " + self.description
 end
 ```
+
 Now if you run the tests, all of them are passing and our Post model has an instance method that returns a post summary. You can test this out in the Rails console as well by running a query on the record we created, such as:
 
-```
+```ruby
 Post.last.post_summary
 ```
+
 And it will return the summary value of that specfic post.
 
 As you may have noticed, we did not have to create a controller, route, view, etc. in order to get the Post model working. The data aspect of the application can work separately from the view and data flow logic, this level of abstraction makes it efficient to test data behavior without having it strongly coupled to how it is rendered to the user. With that being said, it is considered a best practice to have your controller and view files follow the proper naming convention so that the MVC associations are readable. For example, to build out the controller and view code for our Post model we would create the following structure:
