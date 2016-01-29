@@ -1,6 +1,6 @@
 # ActiveRecord Models and Rails
 
-<a href='https://learn.co/lessons/rails-activerecord-models-and-rails-readme' data-visibility='hidden'>View this lesson on Learn.co</a>
+<p data-visibility='hidden'>View <a href='https://learn.co/lessons/rails-activerecord-models-and-rails-readme' title='ActiveRecord Models and Rails'>ActiveRecord Models and Rails</a> on Learn.co and start learning to code for free.</p>
 
 ## ActiveRecord's Role
 
