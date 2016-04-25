@@ -1,7 +1,5 @@
 # ActiveRecord Models and Rails
 
-<p data-visibility='hidden'>View <a href='https://learn.co/lessons/rails-activerecord-models-and-rails-readme' title='ActiveRecord Models and Rails'>ActiveRecord Models and Rails</a> on Learn.co and start learning to code for free.</p>
-
 ## ActiveRecord's Role
 
 ActiveRecord is the built in ORM that Rails utilizes to manage the model aspects of an application. What is an ORM? An ORM is an Object Relational Mapping system, essentially this is the module that enables your application to manage data in a method driven structure. This means that you are able to run queries, add records, and perform all of the traditional database processes by leveraging methods as opposed to writing SQL manually. For example, below is the traditional way that we would query a database of 'posts' using SQL:
@@ -30,14 +28,37 @@ A typical model file will contain code such as, but not limited to the following
 * [Callbacks](http://api.rubyonrails.org/classes/ActiveRecord/Callbacks.html)
 * Custom algorithms
 
-*If any/all of the items above aren't familiar to you yet, don't worry, we'll cover them in future lessons. However I think it's important to have an idea for what can be included in a model file*
+*If any/all of the items above aren't familiar to you yet, don't worry, we'll cover them in future lessons. It's important to have an idea for what can be included in a model file, even at this early stage.*
 
 
 ## Creating an ActiveRecord Model
 
 As a professional Rails developer you will be expected to build applications by leveraging a BDD process, so we will walk through how to build each feature with a test first approach so that the tests can lead our development, however please focus on the implementation code so that you can get a firm understanding of how to build a model, database table, etc.
 
-In order to get started, we will first create a RSpec test. Assuming we already have RSpec installed, let's create a new directory and place our first spec in it: ```spec/models/post_spec.rb```. In that file place the following code:
+In order to get started, we will first create a RSpec test. We've provided a
+basic skeleton of a Rails application using RSpec in this repo.
+
+To generate this app, we installed the Rails gem, then ran
+
+``` bash
+# the -T flag tells the Rails project generator not to
+# include TestUnit, the default testing framework
+rails new rails-activerecord-models-and-rails-readme -T
+
+# The Rails project generator created this directory for us
+cd rails-activerecord-models-and-rails-readme
+
+# We modified the Gemfile to include
+# `gem 'rspec-rails', '~> 3.0'` in the :development, :test
+# group, then ran
+
+bundle install
+
+# Finally, we created the initial RSpec config
+rails g rspec:install
+```
+
+Let's create a new file: ```spec/models/post_spec.rb```. In that file place the following code:
 
 ```ruby
 require 'rails_helper'
