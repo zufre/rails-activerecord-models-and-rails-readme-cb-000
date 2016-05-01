@@ -2,7 +2,7 @@
 
 ## ActiveRecord's Role
 
-ActiveRecord is the built in ORM that Rails utilizes to manage the model aspects of an application. What is an ORM? An ORM is an Object Relational Mapping system, essentially this is the module that enables your application to manage data in a method driven structure. This means that you are able to run queries, add records, and perform all of the traditional database processes by leveraging methods as opposed to writing SQL manually. For example, below is the traditional way that we would query a database of 'posts' using SQL:
+ActiveRecord is the built-in ORM that Rails utilizes to manage the model aspects of an application. What is an ORM? An ORM is an Object Relational Mapping system, essentially this is the module that enables your application to manage data in a method driven structure. This means that you are able to run queries, add records, and perform all of the traditional database processes by leveraging methods as opposed to writing SQL manually. For example, below is the traditional way that we would query a database of 'posts' using SQL:
 
 ```"SELECT * FROM Posts"```
 
@@ -174,3 +174,5 @@ Being able to work in different environments is one of the strong points of Rail
 ## Summary
 
 We covered quite a bit of material in this lesson. You should now have a firm understanding of ActiveRecord models in Rails. ActiveRecord is a powerful tool that enables developers to focus on the logic of their applications while streamlining processes such as connecting to the database, running queries, and much more.
+
+<p class='util--hide'>View <a href='https://learn.co/lessons/rails-activerecord-models-and-rails-readme'>ActiveRecord Models and Rails</a> on Learn.co and start learning to code for free.</p>
