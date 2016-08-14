@@ -33,7 +33,7 @@ A typical model file will contain code such as but not limited to the following:
 
 ## Creating an Active Record Model
 
-As a professional Rails developer, you will be expected to build applications by leveraging a TDD process, so we will walk through how to build each feature with a test-first approach so that the tests can lead our development. However, please focus on the implementation code so that you can get a firm understanding of how to build a model, database table, etc.
+As a professional Rails developer, you will be expected to build applications by leveraging a [BDD](http://rspec.info/) process, so we will walk through how to build each feature with a test-first approach so that the tests can lead our development. However, please focus on the implementation code so that you can get a firm understanding of how to build a model, database table, etc.
 
 In order to get started, we will first create an RSpec test. We've provided a basic skeleton of a Rails application using RSpec in this repo.
 
