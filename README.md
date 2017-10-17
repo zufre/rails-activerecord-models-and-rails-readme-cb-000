@@ -74,7 +74,7 @@ class Post
 end
 ```
 
-This will get the tests passing, but it still has some weird errors because we need to create a schema file. You can do that by running `rake db:migrate`. This will create the schema file and clear the warning. Now update the `Post` spec to test for a `Post` being created. It should look something like this:
+This will get the tests passing, but it still has some weird errors because we need to create a schema file. You can do that by running `rake db:migrate`. (There is no need to create a database with `rake db:create` first. The test suite will create a test database for us when we run our tests.) This will create the schema file and clear the warning. Now update the `Post` spec to test for a `Post` being created. It should look something like this:
 
 ```ruby
 describe Post do
