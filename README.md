@@ -115,7 +115,7 @@ describe Post do
 end
 ```
 
-Running this test gives us the error of: `` undefined method `create!' for Post:Class ``. To implement this feature, let's create the database table for our
+Running this test gives us the error of: `undefined method 'create!' for Post:Class`. To implement this feature, let's create the database table for our
 posts. Create a new directory in the `db/` directory called `migrate`, and add a
 new file called `001_create_posts.rb`. To that file, add the following code:
 
